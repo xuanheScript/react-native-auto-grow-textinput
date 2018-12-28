@@ -54,12 +54,10 @@ export default class AutoGrowTextInput extends React.Component {
       onContentSizeChange: this._onContentSizeChange,
     }, [ 'style', 'maxLines' ]);
 
-    const { value, shrinkIfEmpty } = newProps;
-
     const externalStyle = this.props.style;
     const textInputStyle = {
-      height: (shrinkIfEmpty || !value) ? this._minHeight() : this.state.height
-    };
+      height: this.state.height
+    }
 
     return (
       <TextInput
@@ -72,11 +70,13 @@ export default class AutoGrowTextInput extends React.Component {
 
   _onContentSizeChange = (event) => {
     const { contentSize } = event.nativeEvent;
+    
     const height = this._calcHeight(contentSize.height, this.state.limit);
 
     if (height === this.state.height) {
       return;
     }
+    
     this.setState({ height });
     this.props.onResized && this.props.onResized();
   }
